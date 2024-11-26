@@ -110,11 +110,11 @@ public class Agent : MonoBehaviour
         }
         else
         {   
-            print("Getting new actions here");
+            //print("Getting new actions here");
             command_request = JsonUtility.FromJson<CommandRequest>(res.downloadHandler.text);
             //print("CommandRequest: " + res.downloadHandler.text);
             set_state(command_request.command);
-            print("new state set");
+            //print("new state set");
             callback?.Invoke();
         }
     }
@@ -158,14 +158,14 @@ public class Agent : MonoBehaviour
                 {
                     reset_response = new ResetResponse {observation = get_observation()};     // set the response with the initial observation of the environment
                     reset_response.pause = on_pause;
-                    print("reset response is set");
+                    //print("reset response is set");
                     yield return do_command_request("POST", "/reset_done", reset_response.to_json(), () =>
                     {
                         episode_paused_time = 0;
                         pause_time = 0;
                         episode_started = DateTime.Now;
                     });     // send the response
-                    print("reset response is sent");
+                    //print("reset response is sent");
                     freeze_game = true;   // freeze the game
                     is_done = false;    // game will start
                     break;
@@ -173,7 +173,7 @@ public class Agent : MonoBehaviour
                 case "step":
                 {
                     freeze_game = false;    // unfreeze the game
-                    print("agent step Get observation");
+                    //print("agent step Get observation");
                     step_request = command_request.step_request;    // retrieve step request
                     // calculate the duration of the action. subtract the time that the request had to travel through
                     // internet, because during this time the action was had been executed
@@ -181,9 +181,9 @@ public class Agent : MonoBehaviour
                     var action_duration = game_config.action_duration - request_duration - 0.005f;  
                     
                     yield return new WaitForSeconds(action_duration < 0 ? 0 : action_duration);     // wait to execute step for "action duration" time
-                    print("agent step after wait");
+                    //print("agent step after wait");
                     set_step_response(state);
-                    print("step_reponse is set");
+                    //print("step_reponse is set");
                     var start_request_time = DateTime.Now;
                     yield return do_command_request("POST", "/observation", step_response.to_json(), () =>
                     {
@@ -197,7 +197,7 @@ public class Agent : MonoBehaviour
                         freeze_game = true;
                         set_state("goal_reached");
                     });     // construct the response to the step request
-                    print("step response is sent");
+                    //print("step response is sent");
                     break;
                 }
                 case "step_two_agents":

@@ -32,14 +32,14 @@ public class SocketAgent : MonoBehaviour
 
     void FixedUpdate()
     {   
-        print("FixedUpdate");
-        print(socket_ready);
+        //print("FixedUpdate");
+        //print(socket_ready);
         if (!socket_ready)
         {   
-            print("Socket not ready");
+            //print("Socket not ready");
             setup_socket();
             if (socket_ready){
-                print("Socket ready");
+                //print("Socket ready");
                 StartCoroutine(read());
             }
             else
@@ -60,7 +60,7 @@ public class SocketAgent : MonoBehaviour
 
     float[] get_observation()
     {   
-        print("SocketAgent get_observation");
+        //print("SocketAgent get_observation");
         var input_x = Input.GetAxis("Horizontal");
         var x_speed = 0f;
         if (input_x > 0)
@@ -86,13 +86,13 @@ public class SocketAgent : MonoBehaviour
         var step_response = new StepResponse();
         var reset_response = new ResetResponse();
         start_time = DateTime.Now;
-        print("I do read");
+        //print("I do read");
         while (true)
         {
             var mill_diff = (DateTime.Now - start_time).TotalMilliseconds;
             if (mill_diff > MAX_NO_DATA)
             {
-                print("SocketTimeout");
+                //print("SocketTimeout");
                 start_time = DateTime.Now;
                 freeze_game = true;
                 close_socket();
@@ -121,7 +121,7 @@ public class SocketAgent : MonoBehaviour
             {
                 case "reset":
                     start_time = DateTime.Now;
-                    print("reset");
+                    //print("reset");
                     // reset_ball(gameObject, BALL);
 
                     reset_response.observation = get_observation();
@@ -131,7 +131,7 @@ public class SocketAgent : MonoBehaviour
                     break;
                 case "testreset":
                     start_time = DateTime.Now;
-                    print("testreset");
+                    //print("testreset");
                     // reset_ball(gameObject, BALL);
 
                     reset_response.observation = get_observation();
@@ -147,7 +147,7 @@ public class SocketAgent : MonoBehaviour
                 case "step":
                     start_time = DateTime.Now;
 
-                    print("socket_agent step");
+                    //print("socket_agent step");
                     var ser_step = JsonUtility.FromJson<StepRequest>(res[1]);
                     // do the actions
                     step_request = ser_step;
