@@ -68,6 +68,7 @@ public class GameConfig : RequestResponse
     public int max_duration = 40;
     public bool human_assist = false;
     public bool human_only = false;
+    public bool two_humans = false;
     public float action_duration = 0.2f;
     public float human_speed = 0.2f;
     public float agent_speed = 0.2f;

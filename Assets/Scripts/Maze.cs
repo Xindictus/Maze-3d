@@ -98,7 +98,8 @@ public class Maze : MonoBehaviour
     int get_x_input(bool discrete)
     {
         if (!discrete)
-        {
+        {   
+            print('y');
             var i_x = Input.GetAxis("Horizontal");
             if (i_x > 0)
                 input_x = 1;
@@ -108,8 +109,19 @@ public class Maze : MonoBehaviour
                 input_x = 0;
         }
         else
-            input_x = (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow) ? -1 : 0) +
-                      (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.RightArrow) ? 1 : 0);
+        {   
+            print('x');
+            if (game_config.two_humans)
+            {
+                print("two humans: " + game_config.two_humans);
+                input_x = (Input.GetKey(KeyCode.A) ? -1 : 0) + (Input.GetKey(KeyCode.D) ? 1 : 0);
+            }
+            else
+            {
+                input_x = (Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.LeftArrow) ? -1 : 0) +
+                        (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.RightArrow) ? 1 : 0);
+            }
+        }
 
         return input_x;
     }
@@ -127,8 +139,18 @@ public class Maze : MonoBehaviour
                 input_z = 0;
         }
         else
-            input_z = (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow) ? 1 : 0) +
-                      (Input.GetKeyDown(KeyCode.S) || Input.GetKeyDown(KeyCode.DownArrow) ? -1 : 0);
+        {
+            print("two humans: " + game_config.two_humans);
+            if (game_config.two_humans)
+            {
+                input_z = (Input.GetKey(KeyCode.UpArrow) ? 1 : 0) + (Input.GetKey(KeyCode.DownArrow) ? -1 : 0);
+            }
+            else
+            {
+                input_z = (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.UpArrow) ? 1 : 0) +
+                        (Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.DownArrow) ? -1 : 0);
+            }
+        }
 
         return input_z;
     }
@@ -146,11 +168,12 @@ public class Maze : MonoBehaviour
         //print(player_x_axis);
         //print(player_z_axis);
         if (player_x_axis)
-        {
+        {   
+            
             x_angular_speed = (discrete) ? get_x_input(true) * game_config.discrete_angle_change : get_x_input(false) * game_config.human_speed * Time.deltaTime;
             //print(x_angular_speed);
             local_rotation.x =
-                Mathf.Clamp(check_angle(local_rotation.x + x_angular_speed),
+                Mathf.Clamp(check_angle(local_rotation.x + (float)(x_angular_speed * 0.4)),
                     LOWER_BOUND, UPPER_BOUND);
         }
 
@@ -159,7 +182,7 @@ public class Maze : MonoBehaviour
             z_angular_speed = (discrete) ? get_z_input(true) * game_config.discrete_angle_change : get_z_input(false) * game_config.human_speed * Time.deltaTime;
             //print(z_angular_speed);
             local_rotation.z =
-                Mathf.Clamp(check_angle(local_rotation.z + z_angular_speed),
+                Mathf.Clamp(check_angle(local_rotation.z + (float)(z_angular_speed*0.4)),
                     LOWER_BOUND, UPPER_BOUND);
 
         }
@@ -174,7 +197,7 @@ public class Maze : MonoBehaviour
         // agent move maze
         if (agent_z_axes)
         {   
-            print("Agent Action: " + step_request.action_agent);
+            //print("Agent Action: " + step_request.action_agent);
             z_angular_speed = step_request.action_agent * game_config.agent_speed * Time.deltaTime;
             local_rotation.z = Mathf.Clamp(check_angle(local_rotation.z + z_angular_speed), LOWER_BOUND, UPPER_BOUND);
         }
