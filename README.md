@@ -12,9 +12,10 @@ H-AI_collab_game and maze_GI_Unity work as HTTP clients.
 ### Edit MazeUnity
 * Download git
   
-      git clone https://github.com/ligerfotis/MazeUnity.git
+      git clone https://github.com/Dkoutrintzes/Maze-3d.git
   
-* [Install Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/GettingStartedInstallingHub.html) (Version: 2022.3.29f1)
+
+* [Install Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/GettingStartedInstallingHub.html) (Version: 2020.3.29f1)
 * Open with unity
   * If Unity cannot open the project or does not recognize it, create a new project and replace the folders.
 * Remove default scene
@@ -26,32 +27,12 @@ https://www.jetbrains.com/help/rider/Unity.html#getting-started
 ### Play
 
 #### Prerequisites 
-* Start the dedicated [Maze Server](https://github.com/panos-stavrianos/maze_server)
-* Start the experiment [MazeRL](https://github.com/ligerfotis/maze_RL_online) 
+* Start the dedicated [Maze Server](https://github.com/Dkoutrintzes/Maze3D-Docker-Server)
+* Start the experiment [Maze Experiment](https://github.com/Dkoutrintzes/Maze-Experiment)
 
 #### Play in Unity Editor
 Just open the game in Unity and press the `play` button.
 See [here](https://github.com/ligerfotis/MazeUnity/tree/main/Assets/Scripts) for connection instructions
-
-#### Play in Web Browser
-Every time a user opens the link to the webgl in the browser the game is being sent to it from a docker.
-##### Start webgl server with docker
-* Build Settings -> web_build -> (switch platform) -> build
-* Choose web_build and name it “webgl”
-* Go to to MazeUnity/web_build
-        
-        cd MazeUnity/web_build
-* Edit webgl.conf 'server_name' to the name of your server without the ‘http://’ header (default: localhost)
-* Make sure the ports used below are open.
-*       docker build -t <image_name>:<version> . (docker build -t maze-unity:1.0.0 .)
-*       docker run -p <host_port>:80 <image_name>:<image_version> (docker run -d -p 12000:80 maze-unity:1.0.0)
-* Open <server_name>:<host_port> (localhost:12000) in a browser.
-* If you want to stop the docker: `docker stop maze`
-* If you want to remove the docker: `docker rm maze`
-
-### HTTP connectivity
-
-In [Assets/Scripts](https://github.com/ligerfotis/MazeUnity/tree/main/Assets/Scripts) folder.
 
 ### MazeUnity Environment Overview
 ![MazeUnity](./maze.png)
