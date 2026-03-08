@@ -10,6 +10,8 @@ public class Ball : MonoBehaviour
 {
     Rigidbody r_ball;
 
+    public int[] OneHotStartPos { get; private set; } = new int[3];
+
     bool did_reset = false;
 
     // Start is called before the first frame update
@@ -18,20 +20,27 @@ public class Ball : MonoBehaviour
         r_ball = GetComponent<Rigidbody>();
     }
 
+    void Awake()
+    {
+        SetStartPosFromIndex(0);
+    }
+
     // Update is called once per frame
     void Update()
-    {   
+    {
         // print(state);
         if (state == "reset" && !did_reset)
-        {      
+        {
             print("resetting ball");
-            transform.localPosition = get_ball_init_pos();
+            InitBallPosResult ball_init = get_ball_init_pos();
+            SetStartPosFromIndex(ball_init.Index);
+            transform.localPosition = ball_init.Pos;
             transform.rotation = ball_init_rot;
             did_reset = true;
         }
 
         if (state == "testreset" && !did_reset)
-        {      
+        {
             print("Test resetting ball");
             transform.localPosition = get_ball_test_init_pos();
             transform.rotation = ball_init_rot;
@@ -40,10 +49,12 @@ public class Ball : MonoBehaviour
 
         if (state == "try_game" && is_done)
         {
-            transform.localPosition = get_ball_init_pos();
+            InitBallPosResult ball_init = get_ball_init_pos();
+            SetStartPosFromIndex(ball_init.Index);
+            transform.localPosition = ball_init.Pos;
             transform.rotation = ball_init_rot;
             is_done = false;
-            episode_started=DateTime.Now;
+            episode_started = DateTime.Now;
         }
         // set y axis to zero
         if (transform.localPosition.y >= 0.027f && !is_done)
@@ -52,7 +63,7 @@ public class Ball : MonoBehaviour
         }
 
         if (state == "step")
-        {   
+        {
             did_reset = false;
         }
 
@@ -65,6 +76,13 @@ public class Ball : MonoBehaviour
             freeze();
         else
             unfreeze();
+    }
+
+    void SetStartPosFromIndex(int init_index)
+    {
+        // clear then set
+        Array.Clear(OneHotStartPos, 0, OneHotStartPos.Length);
+        if ((uint)init_index < 3u) OneHotStartPos[init_index] = 1;
     }
 
     void freeze()

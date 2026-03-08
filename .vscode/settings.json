@@ -56,5 +56,5 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "Maze-3d.sln"
+    "dotnet.defaultSolution": "Maze-3d.slnx"
 }
